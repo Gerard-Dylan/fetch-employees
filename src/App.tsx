@@ -1,23 +1,36 @@
-import { useState } from 'react'
 import EmployeeCard from './components/EmployeeCard';
+import { useState } from 'react';
 import './App.css'
 
 const sampleEmployee = {
     name: {
-        first: '',
-        last: ''
+        first: "Charlie",
+        last: "Thompson",
     },
-    email: '',
+    email: "charlie.thompson@example.com",
     picture: {
-        medium: ''
-    }
+        medium: "https://randomuser.me/api/portraits/med/men/40.jpg",
+    },
 };
 
+
+
 function App() {
+    const [employee, setEmployee] = useState(sampleEmployee);
+
+    const getEmployee = () => {
+        fetch("https://randomuser.me/api?nat=en")
+            .then(response => response.json())
+            .then((data) => {
+                setEmployee(data.results[0]);
+            });
+    };
+
     return (
-        <>
-            <EmployeeCard employee={sampleEmployee} />
-        </>
+        <div className='App'>
+            <EmployeeCard employee={employee} />
+            <button type='button' onClick={getEmployee}>Get employee</button>
+        </div>
     );
 }
 
